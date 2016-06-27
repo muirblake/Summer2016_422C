@@ -29,20 +29,20 @@ public class Game {
 		PegSet pegs = new PegSet();
 		printIntro();
 		Scanner input = new Scanner(System.in);
-		String start = input.next();
+		String start = input.nextLine();
 		start = checkStart(start);
 		if (start.equals("N")) {
 			return;
 		}
 		System.out.println("\n");
 		System.out.println("Generating secret code ....\n");
-		Vector<Character> generatedCode = code.generateSecretCode();
-		code.secretCode = generatedCode;
+		code.secretCode = code.generateSecretCode();
 		while ((config.guessNumber - guessesTaken) > 0) {
 			System.out.print("You have " + (config.guessNumber - guessesTaken) + " guesses left.\n"
 					+ "What is your next guess?\n" + "Type in the characters for your guess and press enter.\n"
 					+ "Enter guess: ");
-			String guessInput = input.next();
+			testCodePrint(code.secretCode);
+			String guessInput = input.nextLine();
 			Vector<Character> guess = new Vector<Character>();
 			for (int i = 0; i < guessInput.length(); i++) {
 				char putInGuess = guessInput.charAt(i);
@@ -55,9 +55,115 @@ public class Game {
 					System.out.print(guess.get(i));
 				}
 				System.out.println("  ->  INVALID GUESS\n");
+				testCodePrint(code.secretCode);
+			}
+			if(validGuess){
+				Vector<Character> guessClone = new Vector<Character>();
+				Vector<Character> secretCodeClone = new Vector<Character>();
+				for (int i = 0; i < guess.size(); i++){
+					guessClone.add(guess.get(i));
+				}
+				for (int i = 0; i < code.secretCode.size(); i++){
+					secretCodeClone.add(code.secretCode.get(i));
+				}
+				pegs.blackPegs = pegs.generateBlackPegs(guessClone, secretCodeClone);
+				pegs.whitePegs = pegs.generateWhitePegs(guessClone, secretCodeClone);
+				if (pegs.blackPegs == 4){
+					System.out.print("\n");
+					for (int i = 0; i < guess.size(); i++){
+						System.out.print(guess.get(i));
+					}
+					System.out.println("  -> Result:  4 black pegs – You win!!\n");
+					board = null;
+					code = null;
+					pegs = null;
+					System.out.print("Are you ready for another game (Y/N): ");
+					Scanner resetInput = new Scanner(System.in);
+					String reset = resetInput.nextLine();
+					reset = checkStart(reset);
+					if (reset.equals("N")) {
+						//return;
+						System.exit(1);
+					}
+					Game newGame = new Game(testMode);
+					newGame.runGame();
+				}
+				if (pegs.blackPegs == 0 && pegs.whitePegs != 0){
+					System.out.print("\n");
+					for (int i = 0; i < guess.size(); i++){
+						System.out.print(guess.get(i));
+					}
+					System.out.print("  -> Result: " + pegs.whitePegs);
+					if (pegs.whitePegs == 1){
+						System.out.println(" white peg\n");
+					}
+					else{
+						System.out.println(" white pegs\n");
+					}
+					guessesTaken++;
+				}
+				if (pegs.whitePegs == 0 && pegs.blackPegs != 0){
+					System.out.print("\n");
+					for (int i = 0; i < guess.size(); i++){
+						System.out.print(guess.get(i));
+					}
+					System.out.print("  -> Result: " + pegs.blackPegs);
+					if (pegs.blackPegs == 1){
+						System.out.println(" black peg\n");
+					}
+					else{
+						System.out.println(" black pegs\n");
+					}
+					guessesTaken++;
+				}
+				if (pegs.blackPegs != 0 && pegs.whitePegs != 0){
+					System.out.print("\n");
+					for (int i = 0; i < guess.size(); i++){
+						System.out.print(guess.get(i));
+					}
+					System.out.print("  -> Result: " + pegs.blackPegs);
+					if (pegs.blackPegs == 1){
+						System.out.print(" black peg");
+					}
+					else{
+						System.out.print(" black pegs");
+					}
+					System.out.print(" and " + pegs.whitePegs);
+					if (pegs.whitePegs == 1){
+						System.out.print(" white peg\n");
+					}
+					else{
+						System.out.print(" white pegs\n");
+					}
+					guessesTaken++;
+				}
+				if (pegs.blackPegs == 0 && pegs.whitePegs == 0){
+					System.out.print("\n");
+					for (int i = 0; i < guess.size(); i++){
+						System.out.print(guess.get(i));
+					}
+					System.out.println("  -> Result: No pegs\n");
+					guessesTaken++;
+				}
 			}
 		}
-
+		System.out.println("Sorry, you are out of guesses. You lose, boo-hoo.\n");
+		System.out.print("Are you ready for another game (Y/N): ");
+		Scanner resetInput = new Scanner(System.in);
+		String reset = resetInput.nextLine();
+		reset = checkStart(reset);
+		if (reset.equals("N")) {
+			//return;
+			System.exit(1);
+		}
+		Game newGame = new Game(testMode);
+		newGame.runGame();
+	}
+	
+	public void testCodePrint(Vector<Character> secretCode){
+		if (this.testMode){
+			System.out.println("The secret code is " + secretCode);
+		}
 	}
 
 	public String checkStart(String yesOrNo) {
