@@ -13,9 +13,6 @@ public class Game {
 	boolean testMode;
 	int guessesTaken = 0;
 	GameConfiguration config;
-	GameBoard board = new GameBoard();
-	Codes code = new Codes();
-	PegSet pegs = new PegSet();
 
 	public Game() {
 		this.testMode = false;
@@ -27,6 +24,9 @@ public class Game {
 	}
 
 	public void runGame() {
+		GameBoard board = new GameBoard();
+		Codes code = new Codes();
+		PegSet pegs = new PegSet();
 		printIntro();
 		Scanner input = new Scanner(System.in);
 		String start = input.next();
@@ -45,11 +45,17 @@ public class Game {
 			String guessInput = input.next();
 			Vector<Character> guess = new Vector<Character>();
 			for (int i = 0; i < guessInput.length(); i++) {
-				char putInGuess = guessInput.charAt(0);
+				char putInGuess = guessInput.charAt(i);
 				guess.add(putInGuess);
 			}
 			boolean validGuess = code.checkValidGuess(guess);
-			System.out.println(guess);
+			if (!validGuess) {
+				System.out.print("\n");
+				for (int i = 0; i < guess.size(); i++){
+					System.out.print(guess.get(i));
+				}
+				System.out.println("  ->  INVALID GUESS\n");
+			}
 		}
 
 	}
@@ -87,5 +93,4 @@ public class Game {
 				+ "You have 12 guesses to figure out the secret code or you lose the\n"
 				+ "game. Are you ready to play? (Y/N): ");
 	}
-
 }
