@@ -22,7 +22,10 @@ public class Codes {
 		return secretCode;
 	}
 
-	public boolean checkValidGuess(Vector<Character> toCheck) {
+	public boolean checkValidGuess(Vector<Character> toCheck, String historyCheck) {
+		if(historyCheck.equals("history")){
+			return true;
+		}
 		String[] colorString = codeConfig.colors;
 		int colorNumber = colorString.length;
 		Vector<Character> colorList = new Vector<Character>();
