@@ -1,3 +1,4 @@
+
 /*  * EE422C Project 2 (Mastermind) submission by
  * Replace <...> with your actual data. 
  * <Blake Muir>
@@ -60,37 +61,35 @@ public class Game {
 				guess.add(putInGuess);
 			}
 			boolean validGuess = code.checkValidGuess(guess, guessInput);
-			if (guessInput.equals("history")){
-				if (board.guessHistory.isEmpty()){
+			if (guessInput.equals("history")) {
+				if (board.guessHistory.isEmpty()) {
 					System.out.println("\nNo guesses have been made yet\n");
-				}
-				else{
+				} else {
 					System.out.println();
-					for (int i = 0; i < board.guessHistory.size(); i++){
+					for (int i = 0; i < board.guessHistory.size(); i++) {
 						Vector<Character> previousGuess = board.guessHistory.get(i);
-						//String previousGuess = goingToString.toString();
 						Vector<Integer> previousResult = board.resultHistory.get(i);
 						printVector(previousGuess);
-						System.out.println("\t\t " + previousResult.get(0) + ""
-								+ " black peg(s) and " + previousResult.get(1) + " white peg(s)");
+						System.out.println("\t\t " + previousResult.get(0) + "" + " black peg(s) and "
+								+ previousResult.get(1) + " white peg(s)");
 					}
 					System.out.println();
 				}
 			}
 			if (!validGuess) {
 				System.out.print("\n");
-				for (int i = 0; i < guess.size(); i++){
+				for (int i = 0; i < guess.size(); i++) {
 					System.out.print(guess.get(i));
 				}
-				System.out.println("  ->  INVALID GUESS\n");	
+				System.out.println("  ->  INVALID GUESS\n");
 			}
-			if(validGuess && !(guessInput.equals("history"))){
+			if (validGuess && !(guessInput.equals("history"))) {
 				Vector<Character> guessClone = new Vector<Character>();
 				Vector<Character> secretCodeClone = new Vector<Character>();
-				for (int i = 0; i < guess.size(); i++){
+				for (int i = 0; i < guess.size(); i++) {
 					guessClone.add(guess.get(i));
 				}
-				for (int i = 0; i < code.secretCode.size(); i++){
+				for (int i = 0; i < code.secretCode.size(); i++) {
 					secretCodeClone.add(code.secretCode.get(i));
 				}
 				pegs.blackPegs = pegs.generateBlackPegs(guessClone, secretCodeClone);
@@ -100,98 +99,90 @@ public class Game {
 				addToHistory.add(pegs.blackPegs);
 				addToHistory.add(pegs.whitePegs);
 				board.resultHistory.add(addToHistory);
-				if (pegs.blackPegs == 4){
+				if (pegs.blackPegs == 4) {
 					System.out.print("\n");
-					for (int i = 0; i < guess.size(); i++){
+					for (int i = 0; i < guess.size(); i++) {
 						System.out.print(guess.get(i));
 					}
 					System.out.println("  -> Result:  4 black pegs – You win!!\n");
 					board = null;
 					code = null;
 					pegs = null;
-					System.out.print("Are you ready for another game (Y/N): ");
-					Scanner resetInput = new Scanner(System.in);
-					String reset = resetInput.nextLine();
-					reset = checkStart(reset);
-					if (reset.equals("N")) {
-						System.exit(0);
-					}
-					Game newGame = new Game(testMode);
-					newGame.runGame();
+					newGamePrompt(testMode);
 				}
-				if (pegs.blackPegs == 0 && pegs.whitePegs != 0){
+				if (pegs.blackPegs == 0 && pegs.whitePegs != 0) {
 					System.out.print("\n");
-					for (int i = 0; i < guess.size(); i++){
+					for (int i = 0; i < guess.size(); i++) {
 						System.out.print(guess.get(i));
 					}
 					System.out.print("  -> Result: " + pegs.whitePegs);
-					if (pegs.whitePegs == 1){
+					if (pegs.whitePegs == 1) {
 						System.out.println(" white peg\n");
-					}
-					else{
+					} else {
 						System.out.println(" white pegs\n");
 					}
 					guessesTaken++;
 				}
-				if (pegs.whitePegs == 0 && pegs.blackPegs != 0){
+				if (pegs.whitePegs == 0 && pegs.blackPegs != 0) {
 					System.out.print("\n");
-					for (int i = 0; i < guess.size(); i++){
+					for (int i = 0; i < guess.size(); i++) {
 						System.out.print(guess.get(i));
 					}
 					System.out.print("  -> Result: " + pegs.blackPegs);
-					if (pegs.blackPegs == 1){
+					if (pegs.blackPegs == 1) {
 						System.out.println(" black peg\n");
-					}
-					else{
+					} else {
 						System.out.println(" black pegs\n");
 					}
 					guessesTaken++;
 				}
-				if (pegs.blackPegs != 0 && pegs.whitePegs != 0){
+				if (pegs.blackPegs != 0 && pegs.whitePegs != 0) {
 					System.out.print("\n");
-					for (int i = 0; i < guess.size(); i++){
+					for (int i = 0; i < guess.size(); i++) {
 						System.out.print(guess.get(i));
 					}
 					System.out.print("  -> Result: " + pegs.blackPegs);
-					if (pegs.blackPegs == 1){
+					if (pegs.blackPegs == 1) {
 						System.out.print(" black peg");
-					}
-					else{
+					} else {
 						System.out.print(" black pegs");
 					}
 					System.out.print(" and " + pegs.whitePegs);
-					if (pegs.whitePegs == 1){
-						System.out.print(" white peg\n");
-					}
-					else{
-						System.out.print(" white pegs\n");
+					if (pegs.whitePegs == 1) {
+						System.out.println(" white peg\n");
+					} else {
+						System.out.println(" white pegs\n");
 					}
 					guessesTaken++;
 				}
-				if (pegs.blackPegs == 0 && pegs.whitePegs == 0){
+				if (pegs.blackPegs == 0 && pegs.whitePegs == 0) {
 					System.out.print("\n");
-					for (int i = 0; i < guess.size(); i++){
+					for (int i = 0; i < guess.size(); i++) {
 						System.out.print(guess.get(i));
 					}
 					System.out.println("  -> Result: No pegs\n");
 					guessesTaken++;
 				}
 			}
-		}System.out.println("Sorry, you are out of guesses. You lose, boo-hoo.\n");System.out.print("Are you ready for another game (Y/N): ");
-
-	Scanner resetInput = new Scanner(System.in);
-	String reset = resetInput.nextLine();reset=
-
-	checkStart(reset);
+		}
+		System.out.println("Sorry, you are out of guesses. You lose, boo-hoo.\n");
+		newGamePrompt(testMode);
+	}
+	
+	public void newGamePrompt(boolean testing){
+		System.out.print("Are you ready for another game (Y/N): ");
+		Scanner newGameInput = new Scanner(System.in);
+		String reset = newGameInput.nextLine();
+		reset = checkStart(reset);
 		if (reset.equals("N")) {
 			System.exit(0);
 		}
 		Game newGame = new Game(testMode);
 		newGame.runGame();
 	}
-	
-	public void printVector(Vector<Character> toPrint){
-		for (int i = 0; i < toPrint.size(); i++){
+
+	public void printVector(Vector<Character> toPrint) {
+		for (int i = 0; i < toPrint.size(); i++) {
 			System.out.print(toPrint.get(i));
 		}
 	}
