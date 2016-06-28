@@ -41,7 +41,7 @@ public class Game {
 		String start = input.nextLine();
 		start = checkStart(start);
 		if (start.equals("N")) {
-			return;
+			System.exit(0);
 		}
 		System.out.println("\n");
 		System.out.println("Generating secret code ....\n");
@@ -114,7 +114,7 @@ public class Game {
 					String reset = resetInput.nextLine();
 					reset = checkStart(reset);
 					if (reset.equals("N")) {
-						return;
+						System.exit(0);
 					}
 					Game newGame = new Game(testMode);
 					newGame.runGame();
@@ -184,7 +184,7 @@ public class Game {
 
 	checkStart(reset);
 		if (reset.equals("N")) {
-			return;
+			System.exit(0);
 		}
 		Game newGame = new Game(testMode);
 		newGame.runGame();
