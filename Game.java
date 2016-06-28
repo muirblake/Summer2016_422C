@@ -1,3 +1,13 @@
+/*  * EE422C Project 2 (Mastermind) submission by
+ * Replace <...> with your actual data. 
+ * <Blake Muir>
+ * <bmm2897>
+ * <Aaron Vail>
+ * <ajv872>
+ * <https://github.com/muirblake/Summer2016_422C>
+ * Slip days used: <0>
+ * Summer 2016
+ */
 
 import java.util.*;
 
@@ -16,7 +26,6 @@ public class Game {
 
 	public Game() {
 		this.testMode = false;
-
 	}
 
 	public Game(boolean test) {
@@ -37,13 +46,15 @@ public class Game {
 		System.out.println("\n");
 		System.out.println("Generating secret code ....\n");
 		code.secretCode = code.generateSecretCode();
+		testCodePrint(code.secretCode);
+		System.out.println();
 		while ((config.guessNumber - guessesTaken) > 0) {
 			System.out.print("You have " + (config.guessNumber - guessesTaken) + " guesses left.\n"
 					+ "What is your next guess?\n" + "Type in the characters for your guess and press enter.\n"
 					+ "Enter guess: ");
-			testCodePrint(code.secretCode);
 			String guessInput = input.nextLine();
 			Vector<Character> guess = new Vector<Character>();
+			testCodePrint(code.secretCode);
 			for (int i = 0; i < guessInput.length(); i++) {
 				char putInGuess = guessInput.charAt(i);
 				guess.add(putInGuess);
@@ -54,13 +65,16 @@ public class Game {
 					System.out.println("\nNo guesses have been made yet\n");
 				}
 				else{
+					System.out.println();
 					for (int i = 0; i < board.guessHistory.size(); i++){
-						Vector<Character> goingToString = board.guessHistory.get(i);
-						String previousGuess = goingToString.toString();
+						Vector<Character> previousGuess = board.guessHistory.get(i);
+						//String previousGuess = goingToString.toString();
 						Vector<Integer> previousResult = board.resultHistory.get(i);
-						System.out.println(previousGuess + "\t\t " + previousResult.get(0) + ""
+						printVector(previousGuess);
+						System.out.println("\t\t " + previousResult.get(0) + ""
 								+ " black peg(s) and " + previousResult.get(1) + " white peg(s)");
 					}
+					System.out.println();
 				}
 			}
 			if (!validGuess) {
@@ -68,8 +82,7 @@ public class Game {
 				for (int i = 0; i < guess.size(); i++){
 					System.out.print(guess.get(i));
 				}
-				System.out.println("  ->  INVALID GUESS\n");
-				testCodePrint(code.secretCode);
+				System.out.println("  ->  INVALID GUESS\n");	
 			}
 			if(validGuess && !(guessInput.equals("history"))){
 				Vector<Character> guessClone = new Vector<Character>();
@@ -101,8 +114,7 @@ public class Game {
 					String reset = resetInput.nextLine();
 					reset = checkStart(reset);
 					if (reset.equals("N")) {
-						//return;
-						System.exit(1);
+						return;
 					}
 					Game newGame = new Game(testMode);
 					newGame.runGame();
@@ -172,16 +184,23 @@ public class Game {
 
 	checkStart(reset);
 		if (reset.equals("N")) {
-			//return;
-			System.exit(1);
+			return;
 		}
 		Game newGame = new Game(testMode);
 		newGame.runGame();
 	}
+	
+	public void printVector(Vector<Character> toPrint){
+		for (int i = 0; i < toPrint.size(); i++){
+			System.out.print(toPrint.get(i));
+		}
+	}
 
 	public void testCodePrint(Vector<Character> secretCode) {
 		if (this.testMode) {
-			System.out.println("The secret code is " + secretCode);
+			System.out.print("The secret code is ");
+			printVector(secretCode);
+			System.out.println();
 		}
 	}
 
